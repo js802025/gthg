@@ -17,7 +17,7 @@ const upload = multer({ storage:storage //Appending extension
 
 var firebase = require("firebase-admin");
 
-var firebase_details = require("gthg-8b42f-firebase-adminsdk-mdi6c-19234d5833.json")
+var firebase_details = require("./gthg-8b42f-firebase-adminsdk-mdi6c-19234d5833.json")
 
 firebase_details.private_key_id = process.env.PRIVATE_KEY_ID
 firebase_details.private_key = process.env.PRIVATE_KEY
