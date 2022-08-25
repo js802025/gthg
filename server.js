@@ -17,21 +17,14 @@ const upload = multer({ storage:storage //Appending extension
 
 var firebase = require("firebase-admin");
 
-var serviceAccount = {
-  "type": "service_account",
-  "project_id": process.env.PROJECT_ID,
-  "private_key_id": process.env.PRIVATE_KEY_ID,
-  "private_key": process.env.PRIVATE_KEY,
-  "client_email": process.env.CLIENT_EMAIL,
-  "client_id": process.env.CLIENT_ID,
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": process.env.CLIENT_X509_CERT_URL
-}
+var firebase_details = require("./gthg-8b5f5-firebase-adminsdk-6q1xu-1f3b0b0b5f.json")
+
+firebase_details.private_key_id = process.env.PRIVATE_KEY_ID
+firebase_details.private_key = process.env.PRIVATE_KEY
+
 
 firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount),
+  credential: firebase.credential.cert(firebase_details),
   databaseURL: "https://gthg-8b42f-default-rtdb.firebaseio.com"
 });
 var TOTAL_TURTLES;
@@ -214,18 +207,10 @@ async function getPlayerFromKey(key) {
 async function submittedUids(callback) {
   const {GoogleAuth} = require('google-auth-library');
   const {GoogleSpreadsheet} = require('google-spreadsheet');
-  const creds = {
-    "type": "service_account",
-    "project_id": process.env.PROJECT_ID,
-    "private_key_id": process.env.GC_PRIVATE_KEY_ID,
-    "private_key": process.env.GC_PRIVATE_KEY,
-    "client_email": process.env.GC_CLIENT_EMAIL,
-    "client_id": process.env.GC_CLIENT_ID,
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": process.env.GC_CLIENT_CERT_URL
-  }
+  var gc_details = require('./client_secret.json')
+  gc_details.private_key_id = process.env.PRIVATE_KEY_ID
+  gc_details.private_key = process.env.GC_PRIVATE_KEY
+
   
 
   //const auth = new GoogleAuth(
@@ -233,7 +218,7 @@ async function submittedUids(callback) {
 
   var doc = new GoogleSpreadsheet("1bUQC1dP8AccCWSOUjNvZBGMBpfhniDGCOFscuIPxb9o")
   //console.log("hello")
-  await doc.useServiceAccountAuth(creds)
+  await doc.useServiceAccountAuth(gc_details)
   await doc.loadInfo()
   var sheet = doc.sheetsById[0]
   var rows = await sheet.getRows()
@@ -380,7 +365,7 @@ app.get('/statistics', (req, res) => {
   })
 })
 app.get('/register', (req, res) => {
-  const hook = new Webhook(process.env.GAMES_WEBHOOK_URL);
+  const hook = new Webhook("https://discord.com/api/webhooks/897330109571276892/S4Klq6pw9YEFgPt_QlhvSSmkK0CopIKaQ2IsQ50IGdbaPKXGcl94vf-e-INhOWUAdy-o");
   //////console.log(req.query)
   const embed = new MessageBuilder()
 .setTitle('New Player')
@@ -429,8 +414,8 @@ socket.on("report", function(data) {
       turtle.title = ordinal_suffix_of(TTURTLES - tfound)
       turtles = insertAtIndex(TTURTLES - tfound - 1, data.id, turtle, turtles)
       tfound += 1
-      const hook = new Webhook(process.env.GAMES_WEBHOOK_URL);
-      const hook1 = new Webhook(process.env.GTHG_WEBHOOK_URL);
+      const hook = new Webhook("https://discord.com/api/webhooks/897330109571276892/S4Klq6pw9YEFgPt_QlhvSSmkK0CopIKaQ2IsQ50IGdbaPKXGcl94vf-e-INhOWUAdy-o");
+      const hook1 = new Webhook("https://discord.com/api/webhooks/902751069535342683/AjfvFwTSm_vo3DoyFz61AJ4UsKqd5A_nn2G_YzJ4NO-u9vX-oFHBQ0E6PYE839iwUxhk");
       if (turtle.hasOwnProperty("uid")) {
       updatePlayerStats(info, turtle.uid, {"top_place":turtle.place, "games_played":1})
     }
