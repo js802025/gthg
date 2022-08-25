@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: gthg.herokuapp.com
+Token: 90e8f0ef0cb461c5a3fa4875a305f2c1ad84029f805da75198f0cadfab754add

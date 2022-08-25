@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Primary Meta Tags -->
+<title>GTHG | The Great Turtle Hiding Game</title>
+<meta name="title" content="GTHG | The Great Turtle Hiding Game">
+<meta name="description" content="Hide Turtle. Find Turtles. Only one can become a Honorary Turtle Master.">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gthg.herokuapp.com/">
+<meta property="og:title" content="GTHG | The Great Turtle Hiding Game">
+<meta property="og:description" content="Hide Turtle. Find Turtles. Only one can become a Honorary Turtle Master.">
+<meta property="og:image" content="https://i.ibb.co/PMn1Q4c/preview.png">
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://gthg.herokuapp.com/">
+<meta property="twitter:title" content="GTHG | The Great Turtle Hiding Game">
+<meta property="twitter:description" content="Hide Turtle. Find Turtles. Only one can become a Honorary Turtle Master.">
+<meta property="twitter:image" content="https://i.ibb.co/PMn1Q4c/preview.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+    <title>GTHG - The Great Turtle Hiding Game</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
+
+
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <script src=
+    "https://www.gstatic.com/firebasejs/5.8.5/firebase.js">
+    </script>
+    <script src="lib/knockout-3.3.0.debug.js"></script>
+    <script src="lib/knockout.mapping-debug.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js" integrity="sha512-w1Bktzax55ZbjW5Mqjz8+mKz4KqRjEUU35Dpq/ath29yskKqIGwNIHiFNp03m/OiJWDXvdQ1/g6aV+l4PeVO7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="script.js"></script> -->
+    <script src="client.js"></script>
+
+    <script src=
+    "https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js">
+    </script>
+    <link type="text/css" rel="stylesheet" href=
+    "https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="cover.css" rel="stylesheet">
+  </head>
+  <body class="d-flex h-100 text-white bg-dark">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column text-center">
+  <header class="mb-auto">
+    <div>
+      <h3 class="float-md-start mb-0">GTHG</h3>
+      <nav class="nav nav-masthead justify-content-center float-md-end">
+        <!-- Button trigger modal -->
+        <!-- ko if: user() -->
+        <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle me-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    Account
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li><a id="statspage" class="dropdown-item" href="/statistcs?pid=">View Profile</a></li>
+    <li id="submitloc"><a class="dropdown-item" data-bs-toggle="modal" href="#submitLocation">Submit Location</a></li>
+    <li><a class="dropdown-item" data-bs-toggle="modal" href="#hallOfFame">Hall of Fame</a></li>
+  </ul>
+</div>
+        <!-- /ko -->
+        <!-- ko if: !user() -->
+        <button type="button" class="btn btn-primary pl-4 text-light me-3"  data-bs-toggle="modal" data-bs-target="#login">
+          Login
+        </button>
+        <!-- /ko -->
+        <button type="button" class="btn pl-4 text-light" style="background-color: #FA321D" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+          Report a Turtle
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark" >
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Report a Turtle</h5>
+              </div>
+              <div class="modal-body">
+                <form data-bind="submit: report" autocomplete="off">
+  <div class="form-group">
+    <label for="turtle">Turtle ID Number</label>
+    <input type="text" class="form-control" id="turtle" data-bind="value: turtleid" aria-describedby="emailHelp" placeholder="Enter ID">
+    <small id="emailHelp" class="form-text text-muted">This is the number displayed on the shell of the turtle.</small>
+  </div>
+  <!-- ko if: user -->
+
+  <div class="form-group">
+    <label for="turtle"><b>Optional:</b> Share the credit with 1 other person:</label>
+    <select data-bind="value: credit" class="form-control">
+      <option>No One</option>
+      <% for ([key, value] of turtles) {%>
+        <option value="<%= value.uid %>"><%= value.name %></option>
+      <% } %>
+    </select>
+  </div>
+  <!-- /ko -->
+  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+</form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="claimacc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark" >
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Claim Account</h5>
+              </div>
+              <div class="modal-body">
+                <form data-bind="submit: claimaccount" autocomplete="off">
+  <div class="form-group">
+    <label for="turtle">Claim Account</label>
+    <input type="text" class="form-control" id="name" data-bind="value: authCode" aria-describedby="emailHelp" placeholder="Enter Provided Code">
+  </div>
+  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+</form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark" >
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Login with Parker Email</h5>
+              </div>
+              <div class="modal-body">
+                <div id="firebaseui-auth-container"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="px-3">
+    <h1>The Great Turtle Hiding Game</h1>
+    <p class="lead">Track the competition!<br><a href="#aboutGTHG" data-bs-toggle="modal">About</a><br><a href="https://docs.google.com/document/d/1XlqmxJSJE_spiXInrudxKFxHItXR1vZb70u-UEalUbo/edit?usp=sharing">Rules & Regulations</a></p>
+  </main>
+  <div class="container justify-content-center">
+    <% if (turtles.size > 0 && signUps === false) { %>
+  <div class="row mx-auto">
+   <div class="col">
+    <div class="d-flex">
+
+      <ul class="mx-auto justify-content-center">
+        <h3>Turtles Left:</h3>
+
+        <% for ([key, value] of turtles) { %>
+        <li>      <% if (value.hasOwnProperty("uid")) {%><a href="/statistics?pid=<%=value.uid%>" class="text-reset text-decoration-none"><% } %><div class="card mt-4" style="width: 18rem; background-color: <% if ("place" in value) { %>
+<% if (value.place === 1) { %>
+#FFD700
+<% } else if (value.place === 2) { %>
+  #C0C0C0
+<% } else if (value.place === 3) { %>
+#CD7F32
+<% } else { %>
+#FA321D
+<% } %>
+          <% } else { %>
+#3E3E40
+            <% } %>;">
+  <div class="card-body">
+    <h5 class="card-title"><%= value.title %></h5>
+    <h1 class="card-text" style="font-size: 5em;"></h1>
+    <p class="card-text"><%= value.name %>
+  <% if (hints) {%>
+    <br>  Hint: <%= value.hint %>
+  <% }%>
+    <% if ("place" in value) { %>
+      <br>Location: <%=value.location%>
+    <%}%></p>
+          </div>
+</div></a>
+        </li>
+        <% }%>
+      </ul>
+</div>
+</div>
+
+</div>
+
+<div class="row mx-auto mt-4">
+  <div class="col">
+   <div class="d-flex">
+
+     <ul class="mx-auto justify-content-center">
+       <h3>Turtles Found:</h3>
+       <% for (var [key, value] of found_turtles) {%>
+         <li>      <a href="/statistics?pid=<%=key%>" class="text-reset text-decoration-none"><div class="card mt-4" style="width: 18rem; background-color: <% if (found_turtles.findIndex((element) => element[0] === key)+1 === 1) { %>
+  #FFD700
+  <% } else if (found_turtles.findIndex((element) => element[0] === key)+1 === 2) { %>
+   #C0C0C0
+  <% } else if (found_turtles.findIndex((element) => element[0] === key)+1 === 3) { %>
+  #CD7F32
+  <% } else { %>
+  #3E3E40
+  <% } %>
+  ;">
+   <div class="card-body">
+     <h5 class="card-title"><%= ordinal_suffix_of(found_turtles.findIndex((element) => element[0] === key)+1) %></h5>
+     <h1 class="card-text" style="font-size: 5em;"></h1>
+     <p class="card-text"><%= names[key] %>
+     <br>  Turtles Found: <%= value[0]+value[1]%></p>
+           </div>
+  </div></a>
+         </li>
+         <%}%>
+     </ul>
+  </div>
+  </div>
+</div>
+
+<%} else if (signUps === true) { %>
+  <div class="row mx-auto mt-4">
+    <div class="col">
+     <div class="d-flex justify-content-center">
+
+       <ul class="mx-auto ">
+  <li>      <div class="card mt-4" style="width: 18rem; background-color: #3E3E40;">
+<div class="card-body" id="signup-body">
+<h5 class="card-title">Sign Ups In Progress</h5>
+<p data-bind="if: user" class="card-text">Looking to join the Great Turtle Hiding Game?<br>
+<a href="#register" data-bs-toggle="modal">Click here</a> to join!</p>
+<p data-bind="ifnot: user" class="card-text">Looking to join the Great Turtle Hiding Game?<br>
+<a href="#login" data-bs-toggle="modal">Click here</a> to create account!</p>
+<!-- /ko -->
+<!-- ko if: !user()
+  <a href="#login" data-bs-toggle="modal">Click here</a> to login and then you can register!</p>
+<!-- /ko -->
+    </div>
+    <div class="card-body" id="getturtle-body">
+      <h5 class="card-title">You're signed up!</h5>
+      <p class="card-text">Keep an eye out for an annoucement from the Game Managers on how to pick up your turtle!
+
+          </div>
+          <div class="card-body" id="hiding-body">
+            <h5 class="card-title">Hide your turtle!</h5>
+            <p class="card-text">Make sure to hide your turtle. When it's hidden, submit its location <a href="#submitLocation" data-bs-toggle="modal">here</a><br>
+      
+                </div>
+                <div class="card-body" id="finding-body">
+                  <h5 class="card-title">Get Ready To Find Turtles</h5>
+                  <p class="card-text">Once hiding ends, find as many turtles as you can to increase your chance of being the last one standing!<br>
+            
+                      </div>
+
+</div>
+  </li>
+</ul></div></div></div>
+  <% } else { %>
+    <div class="row mx-auto mt-4">
+      <div class="col">
+       <div class="d-flex justify-content-center">
+         <ul class="mx-auto ">
+    <li>      <div class="card mt-4" style="width: 18rem; background-color: #3E3E40;">
+<div class="card-body">
+<h5 class="card-title">Registration Will Open Soon</h5>
+<p class="card-text">Check Back Soon For Updates</p>
+  </div>
+</div>
+</li>
+</ul></div></div></div>
+<% } %>
+<div class="row mx-auto mt-4">
+  <div class="col">
+   <div class="d-flex justify-content-center">
+
+     <ul class="mx-auto ">
+       <h3>W/S Rankings:</h3>
+       <% for (var [key, value] of wsranks) {%>
+         <li>      <a href="/statistics?pid=<%=key%>" class="text-reset text-decoration-none"><div class="card mt-4" style="width: 18rem; background-color: <% if (wsranks.findIndex((element) => element[0] === key)+1 === 1) { %>
+  #FFD700
+  <% } else if (wsranks.findIndex((element) => element[0] === key)+1 === 2) { %>
+   #C0C0C0
+  <% } else if (wsranks.findIndex((element) => element[0] === key)+1 === 3) { %>
+  #CD7F32
+  <% } else { %>
+  #3E3E40
+  <% } %>
+  ;">
+   <div class="card-body">
+     <h5 class="card-title"><%= ordinal_suffix_of(wsranks.findIndex((element) => element[0] === key)+1) %></h5>
+     <h1 class="card-text" style="font-size: 5em;"></h1>
+     <p class="card-text"><%= names[key] %>
+     <br>  Wit & Skill Score: <%= value%></p>
+           </div>
+  </div></a>
+         </li>
+         <%}%>
+     </ul>
+  </div>
+  </div>
+</div>
+</div>
+  <footer class="mt-auto text-white-50">
+    <p>GTHG is sponsored in part by the <a href="https://cdn.discordapp.com/attachments/803804130182692965/899355851226247188/unknown.png">JSFFund of America</a></p>
+  </footer>
+</div>
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content bg-dark" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Join Game 7</h5>
+      </div>
+      <div class="modal-body">
+        <p>The 7th Edition of the Great Turtle Hiding Game is open for sign ups!</p>
+        <form data-bind="submit: register">
+
+<button type="submit" class="btn btn-primary mt-4" data-bs-dismiss="modal">Join</button>
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="submitLocation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content bg-dark" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Submit Location</h5>
+      </div>
+      <div class="modal-body">
+        <p>Submit the location of where you hid your turtle. This must be done before the provided date.</p>
+        <form action="/submitlocation" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+          <input type="text" class="form-control" name="tID" placeholder="Turtle ID">
+          <select name="floor" class="form-control mt-3" required>
+            <option selected disabled>Floor...</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+          <select name="hallway" class="form-control mt-3" required>
+            <option selected disabled>Hallway...</option>
+            <option>North (Catboxes/Main)</option>
+            <option>East (Art)</option>
+            <option>South (New Gym)</option>
+            <option>West (Languages/History and English)</option>
+            <option>Wavy</option>
+            <option>Model Home (Bathrooms over Big Gym)</option>
+            <option>Locker Room/New Gym Entrance</option>
+            <option>NE Stairwell (Outside MS Office)</option>
+            <option>NW Stairwell (Main Entrance)</option>
+            <option>SE Stairwell (MS Hallway/Art Hallway)</option>
+            <option>SW Stairwell (Glass)</option>
+            <option>Wavy NE Stairwell (Leads behind SK rooms)</option>
+            <option>Wavy NW Stairwell (Leads into the front lawn/Loading Dock)</option>
+          </select>
+          <textarea class="form-control mt-3" name="desc" placeholder="Description of Location"></textarea>
+          <label for="image" class="mt-3">Photo of the Location: </label>
+          <input type="file" accepts="image/*" name="image" id="image" class="form-control">
+          <p>MAKE SURE YOUR TURTLE IS IN A LEGAL HIDING SPOT(NO PRINTERS)</p>
+          <input type="hidden" name="uid" id="uid">
+          <input type="hidden" name="displayName" id="displayName">
+        </div>
+
+<button type="submit" class="btn btn-primary mt-4" data-bs-dismiss="modal">Submit</button>
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="hallOfFame" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content bg-dark" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Hall of Fame</h5>
+      </div>
+      <div class="modal-body">
+        Taki Chronopoulos (two time champion and honorary turtle master (1st and 2nd edition))
+Beckett S. (two time champion)
+Section C (Champions (Covid-safe edition))
+Shade Rothkopf (three time runner-up, most prolific turtle finder)
+Chairs (winning hiding spot (1st and 2nd edition)) 
+Wavy Hallway (<i>Hall</i> of Fame)
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal fade" id="aboutGTHG" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content bg-dark" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">About</h5>
+      </div>
+      <div class="modal-body">
+        The Great Turtle Hiding Game is a Parker tradition older than time itself. This is the 7th edition of the Great Turtle Hiding Game. The general premise is such: a group of brave and incredible individuals (and you all) hide turtles around a floor of the school. Everyone proceeds to find them. Hints are given out and using puzzle-solving skills the idiots playing can find turtle’s locations. The last turtle standing is the winner. Then you get a trophy and are declared honorary Turtle Master. Then you would likely express excitement for winning.
+
+    </div>
+  </div>
+</div>
+</div>
+  </body>
+  <script>
+  ///  var socket = io()
+  //socket.emit("isPlayer", {""})
+  firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    $("#uid").val(user.uid)
+    $("#displayName").val(user.displayName)
+    console.log(user.displayName)
+    socket.emit("isPlayer", {uid:user.uid})
+  } else {
+    // No user is signed in.
+  }
+});
+    // $(document).ready(function () {
+    //   var user = firebase.auth().currentUser
+    //   console.log(user)
+    //   if (user) {
+        
+    //   }
+      
+      
+   
+
+    // function showModal(title,content){
+    //     $('#myModal .modal-title').html(title);
+    //     $('#myModal .modal-body').html(content);
+    //     $('#myModal').modal('show');
+    // }
+
+// });
+  //   const config = {
+  //   apiKey: "AIzaSyCvz8Sp_ESSh55ad8WeBt6CNJmmVXMEEiE",
+  //   authDomain: "gthg-8b42f.firebaseapp.com",
+  //   databaseURL: "https://gthg-8b42f-default-rtdb.firebaseio.com",
+  //   projectId: "gthg-8b42f",
+  //   storageBucket: "gthg-8b42f.appspot.com",
+  //   messagingSenderId: "859211708021",
+  //   appId: "1:859211708021:web:10bfb2efe47b642e716a3c",
+  //   measurementId: "G-B9CT2X5EY6"
+  // };
+  //firebase.initializeApp(config);
+  firebase.auth().setPersistence(
+      firebase.auth.Auth.Persistence.LOCAL);
+
+  // FirebaseUI config.
+  var uiConfig = {
+      signInOptions: [
+          // Google sign in option
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      ],
+
+      // Terms of service url/callback.
+
+      // Privacy policy url/callback.
+
+      callbacks: {
+          signInSuccessWithAuthResult: function (authResult,
+              redirectUrl) {
+                
+               // socket.emit("isPlayer", {uid:user.uid})
+                //console.log("WTF")
+                return false;
+
+                  // // User successfully signed in.
+                  // user.getIdToken().then(function (idToken) {
+                  //   //  localStorageSet("userID", idToken)
+                  //     //window.location.href = "/"
+                  //     co
+                  //     $("#register").show()
+                  // }).catch(error => {
+                  //     console.log(error);
+                  // });
+              }
+      },
+      signInSuccessUrl: "/#register"
+
+  };
+
+  // Initialize the FirebaseUI Widget using Firebase.
+  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+  // The start method will wait until the DOM is loaded.
+  ui.start('#firebaseui-auth-container', uiConfig);
+  </script>
+</html>
