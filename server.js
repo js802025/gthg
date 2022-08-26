@@ -4,6 +4,8 @@ const app = express()
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const request = require('request');
 const multer = require("multer")
+const dotenv = require('dotenv');
+dotenv.config();
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
   cb(null, __dirname)
