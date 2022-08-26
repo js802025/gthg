@@ -22,7 +22,7 @@ var firebase = require("firebase-admin");
 var firebase_details = require("./gthg-8b42f-firebase-adminsdk-mdi6c-19234d5833.json")
 
 firebase_details.private_key_id = process.env.PRIVATE_KEY_ID
-firebase_details.private_key = JSON.parse(process.env.PRIVATE_KEY)
+firebase_details.private_key = process.env.PRIVATE_KEY
 
 
 firebase.initializeApp({
@@ -211,7 +211,7 @@ async function submittedUids(callback) {
   const {GoogleSpreadsheet} = require('google-spreadsheet');
   var gc_details = require('./client_secret.json')
   gc_details.private_key_id = process.env.PRIVATE_KEY_ID
-  gc_details.private_key = JSON.parse(process.env.GC_PRIVATE_KEY)
+  gc_details.private_key = process.env.GC_PRIVATE_KEY
 
   
 
@@ -234,14 +234,18 @@ async function submittedUids(callback) {
 async function addTurtleLocation(user, location, callback) {
   const {GoogleAuth} = require('google-auth-library');
   const {GoogleSpreadsheet} = require('google-spreadsheet');
-  const creds = require('./client_secret.json')
+  var gc_details = require('./client_secret.json')
+  gc_details.private_key_id = process.env.PRIVATE_KEY_ID
+  gc_details.private_key = process.env.GC_PRIVATE_KEY
+
+  
 
   //const auth = new GoogleAuth(
    //   {scopes: 'https://www.googleapis.com/auth/spreadsheet'});
 
   var doc = new GoogleSpreadsheet("1bUQC1dP8AccCWSOUjNvZBGMBpfhniDGCOFscuIPxb9o")
   //console.log("hello")
-  await doc.useServiceAccountAuth(creds)
+  await doc.useServiceAccountAuth(gc_details)
   await doc.loadInfo()
   var sheet = doc.sheetsById[0]
   var newRow = await sheet.addRow({"UID":user.uid, "Name":user.name, "Turtle Number":user.tID, "Floor":location.floor, "Hallway":location.hallway, "Description":location.desc, "Image":'=IMAGE("'+location.image+'")'})
