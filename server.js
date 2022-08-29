@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-  cb(null, __dirname)
+  cb(null, "/tmp/")
 },
   filename: function (req, file, cb) {
   cb(null, file.originalname)
@@ -17,10 +17,11 @@ var storage = multer.diskStorage({
 const upload = multer({ storage:storage 
   } )
 
+  const GAMES_URL = Buffer.from("aHR0cHM6Ly9wdGIuZGlzY29yZC5jb20vYXBpL3dlYmhvb2tzLzEwMTI5NDQwODU0ODI0NzE1MDQvY09RRjJ1b1VzTW83UWJ6Z2RZTjBsbVVwNTRoUGFUOWtzOWQzVi1fRDFVZ0VPelV6Qm9RX0R6TFFQU0F2RDc1VHQ5V3I=", "base64")
+  const TURTLE_URL = Buffer.from("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTAxMjk0NDM3NTE2NjI5MjAwOS9ORjl5V2xwc0pqOUszRjU5SVE1RDhDR0NRZ1N0d0g1M04ySUJrZEgtdk0yRk9SY0dEbGU0YlRkajJrcm1iQWF4ZmZPcQ", "base64")
 var firebase = require("firebase-admin");
 
 var firebase_details = require("./gthg-8b42f-firebase-adminsdk-mdi6c-19234d5833.json")
-console.log(process.env.PRIVATE_KEY)
 firebase_details.private_key_id = process.env.PRIVATE_KEY_ID
 firebase_details.private_key = JSON.parse(process.env.PRIVATE_KEY)
 
@@ -42,11 +43,15 @@ function writeStats(turtles, found, callback) {
   callback()
 }
 function joinPlayer(uid) {
+  return new Promise((resolve, reject) => {
   readStats((info) => {
     var joiningRef = firebase.database().ref("/joining/")
     info.joining.push(uid)
-    joiningRef.set(info.joining)
+    joiningRef.set(info.joining).then(() => {
+      resolve()
+    })
   })
+})
   
 }
 
@@ -96,17 +101,17 @@ function turtle_found(info, place, finder) {
   }
   for (var x of finder) {
   if (place > 10) {
-  if (info.found_turtles.hasOwnProperty(x.uid)) {
-    info.found_turtles[x.uid][1] += 1/finder.length
+  if (info.found_turtles.hasOwnProperty(x)) {
+    info.found_turtles[x][1] += 1/finder.length
   } else {
-    info.found_turtles[x.uid] = [0, 1/finder.length]
+    info.found_turtles[x] = [0, 1/finder.length]
   }
 } else {
-  if (info.found_turtles.hasOwnProperty(x.uid)) {
-    info.found_turtles[x.uid][0] += 1/finder.length
+  if (info.found_turtles.hasOwnProperty(x)) {
+    info.found_turtles[x][0] += 1/finder.length
   } else {
     //console.log("test")
-    info.found_turtles[x.uid] = [1/finder.length, 0]
+    info.found_turtles[x] = [1/finder.length, 0]
   }
 }
 }
@@ -177,7 +182,6 @@ async function getNameFromKey(keys) {
     var names = {}
   //  //console.log(typeof keys)
     for (var key of keys) {
-    //  //console.log(key)
       var user = await firebase.auth()
   .getUser(key)
       names[key] = user.displayName
@@ -270,16 +274,19 @@ async function addTurtleLocation(user, location, callback) {
 //   info = readStats()
 //   callback(info)
 // }
+const cookieParser = require('cookie-parser')
 app.use(express.urlencoded({limit: '100mb', extended: true, parameterLimit: 1000000}));
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/web'));
+app.use(cookieParser())
 
 
 
 
   app.get('/', (req, res) => {
+
+    
     readStats(function(info) {
-      
       try {
       if (info.turtles[0] === "placeholder") { info.turtles = [] }
     } catch (err) {
@@ -322,7 +329,23 @@ app.use(express.static(__dirname + '/web'));
           }
         })
         //console.log(names)
-        res.render('index.ejs', {turtles : turtles, signUps: info.signUps, hints:info.reveal_hints, found_turtles:display_found_turtles, ordinal_suffix_of:ordinal_suffix_of, names:names, wsranks:wsranks})
+        const sessionCookie = req.cookies.session || '';
+  
+        firebase.auth().verifySessionCookie(sessionCookie, true /** checkRevoked */).then((decodedClaims) => {
+          if (info.joining.includes(decodedClaims.uid)) {
+          submittedUids(uids => {
+            if (uids.includes(decodedClaims.uid)) {
+          res.render('index.ejs', {turtles : turtles, signUps: info.signUps, hints:info.reveal_hints, found_turtles:display_found_turtles, ordinal_suffix_of:ordinal_suffix_of, names:names, wsranks:wsranks, loggedIn:true, hidden:info.hidden, player: true, loc:true, uid:decodedClaims.uid})
+            } else {
+              res.render('index.ejs', {turtles : turtles, signUps: info.signUps, hints:info.reveal_hints, found_turtles:display_found_turtles, ordinal_suffix_of:ordinal_suffix_of, names:names, wsranks:wsranks, loggedIn:true, hidden:info.hidden, player:true, loc: false, uid:decodedClaims.uid})  
+            }
+            })
+          } else {
+            res.render('index.ejs', {turtles : turtles, signUps: info.signUps, hints:info.reveal_hints, found_turtles:display_found_turtles, ordinal_suffix_of:ordinal_suffix_of, names:names, wsranks:wsranks, loggedIn:true, hidden:info.hidden, player:false, loc: false, uid:decodedClaims.uid})
+          }
+        }).catch(err => {
+          res.render('index.ejs', {turtles : turtles, signUps: info.signUps, hints:info.reveal_hints, found_turtles:display_found_turtles, ordinal_suffix_of:ordinal_suffix_of, names:names, wsranks:wsranks, loggedIn:false, hidden:info.hidden, player:false, loc:false, uid:""})
+        })
       })
   //    //console.log(found_turtles)
 
@@ -336,7 +359,26 @@ app.use(express.static(__dirname + '/web'));
 //    //console.log(data.signUps)
 
   })
+
+  app.post("/login",(req, res) => {
+    //console.log(req.body)
+    const idToken = req.body.idToken.toString()
+    const csrfToken = req.body.csrfToken
+    // if (csrfToken !== req.cookies.csrfToken) {
+    //     res.status(401).send("UNAUTHORIZED")
+    //     return
+    // }
+    const expiresIn = 60 * 60 * 24 * 14 * 1000 // 1 week
+    firebase.auth().createSessionCookie(idToken, {expiresIn: expiresIn}).then((sessionCookie) => {
+        const options = {maxAge: expiresIn, httpOnly: true, secure: false}
+        res.cookie('session', sessionCookie, options)
+        res.end(JSON.stringify({status: 'success'}))
+})
+  })
+
   app.post("/submitlocation", upload.single("image"), (req, res) => {
+    const sessionCookie = req.cookies.session || '';
+    firebase.auth().verifySessionCookie(sessionCookie, true /** checkRevoked */).then((decodedClaims) => {
     request({
         url: 'https://freeimage.host/api/1/upload',
         method: 'POST',
@@ -347,11 +389,13 @@ app.use(express.static(__dirname + '/web'));
         }
       }, function(err, data) {
        // console.log(req.body)
-        addTurtleLocation({name: req.body.displayName, uid: req.body.uid, tID:req.body.tID}, {floor:req.body.floor, hallway: req.body.hallway, desc:req.body.desc, image:JSON.parse(data.body).image.url}, () => {
+        addTurtleLocation({name: decodedClaims.name, uid: decodedClaims.uid, tID:req.body.tID}, {floor:req.body.floor, hallway: req.body.hallway, desc:req.body.desc, image:JSON.parse(data.body).image.url}, () => {
           res.redirect("/")
         })
       });
-    
+    }).catch(err => {
+      res.redirect("/")
+    })
   })
 
 //turtles = new Map([["3938", {"title":"Hidden", "name":"Jack", "hint":"U stoopid", "location":"In ur haus"}], ["8383", {"title":"Hidden", "name":"Shade", "hint":"under a see", "location":"in a woodchip"}]])
@@ -371,47 +415,35 @@ app.get('/statistics', (req, res) => {
   })
 })
 app.get('/register', (req, res) => {
-  const hook = new Webhook("https://discord.com/api/webhooks/897330109571276892/S4Klq6pw9YEFgPt_QlhvSSmkK0CopIKaQ2IsQ50IGdbaPKXGcl94vf-e-INhOWUAdy-o");
+  const sessionCookie = req.cookies.session || '';
+  firebase.auth().verifySessionCookie(sessionCookie, true /** checkRevoked */).then((decodedClaims) => {
+  const hook = new Webhook(GAMES_URL);
   //////console.log(req.query)
   const embed = new MessageBuilder()
 .setTitle('New Player')
-.setDescription('Name: '+req.query.name+"\n Phone Number/Discord Username: "+req.query.phone)
+.setDescription('Name: '+decodedClaims.name+"\n Email: "+decodedClaims.email)
 .setTimestamp();
 
   hook.send(embed);
+  joinPlayer(decodedClaims.uid).then(() => {
   res.redirect("/")
+  })
+  })
 })
-// app.get('/login', (req, res) => {
-//   res.render('login.ejs', {})
-// })
 
 
-var server = app.listen(port)
-
-var io = require("socket.io")(server)
-// fs.watchFile('turtle.json', (curr, prev) => {
-//   //console.log("Updated")
-//   try {
-//     const data = fs.readFileSync('turtles.json', 'utf8')
-//   //  io.sockets.emit("turtles", JSON.parse(data).sections)
-//     //console.log(JSON.parse(data).sections)
-//   } catch (err) {
-//     console.error(err)
-//   }
-// });
-io.on("connection", function(socket) {
-////console.log("Connected")
-// try {
-//   const data = fs.readFileSync('turtles.json', 'utf8')
-//   socket.emit("turtles", JSON.parse(data).sections)
-//   //console.log(JSON.parse(data).sections)
-// } catch (err) {
-//   console.error(err)
-
-
-socket.on("report", function(data) {
+app.post("/report", (req, res) => {
+  var data = req.body
+  readStats(function(info) {
+    turtles = info.turtles
+    try {
+      if (info.turtles[0] === "placeholder") { info.turtles = [] }
+    } catch (err) {
+      info.turtles = []
+    }
+      turtles = new Map(info.turtles)
   if (turtles.has(data.id) && turtles.get(data.id).title === "Hidden") {
-    readStats(function(info) {
+    
       tfound = info.turtles_found
       TTURTLES = info.total_turtles
       turtle = turtles.get(data.id)
@@ -420,33 +452,38 @@ socket.on("report", function(data) {
       turtle.title = ordinal_suffix_of(TTURTLES - tfound)
       turtles = insertAtIndex(TTURTLES - tfound - 1, data.id, turtle, turtles)
       tfound += 1
-      const hook = new Webhook("https://discord.com/api/webhooks/897330109571276892/S4Klq6pw9YEFgPt_QlhvSSmkK0CopIKaQ2IsQ50IGdbaPKXGcl94vf-e-INhOWUAdy-o");
-      const hook1 = new Webhook("https://discord.com/api/webhooks/902751069535342683/AjfvFwTSm_vo3DoyFz61AJ4UsKqd5A_nn2G_YzJ4NO-u9vX-oFHBQ0E6PYE839iwUxhk");
+      const hook = new Webhook(GAMES_URL);
+      const hook1 = new Webhook(TURTLE_URL);
       if (turtle.hasOwnProperty("uid")) {
       updatePlayerStats(info, turtle.uid, {"top_place":turtle.place, "games_played":1})
     }
-      turtle_found(info, turtle.place, data.user)
+      
       ////console.log(req.query)
-      if (data.user.length === 1) {
-      var embed = new MessageBuilder()
-    .setTitle('Turtle Eliminated')
-    .setDescription('Name: '+turtle.name+"\n Location: "+turtle.location+"\n Found By: "+data.user[0].displayName)
-    .setTimestamp();
-  } else if (data.user.length === 0) {
-    var embed = new MessageBuilder()
-  .setTitle('Turtle Eliminated')
-  .setDescription('Name: '+turtle.name+"\n Location: "+turtle.location)
-  .setTimestamp();
-
-  } else {
-    var embed = new MessageBuilder()
-  .setTitle('Turtle Eliminated')
-  .setDescription('Name: '+turtle.name+"\n Location: "+turtle.location+"\n Found By: "+data.user[0].displayName+"and 1 other")
-  .setTimestamp();
-  }
-      hook.send(embed);
-      hook1.send(embed);
+      
+      
+      
       //console.log(TTURTLES - tfound)
+      
+      const sessionCookie = req.cookies.session || '';
+      firebase.auth().verifySessionCookie(sessionCookie, true /** checkRevoked */).then((decodedClaims) => {
+        data.user = [decodedClaims.uid]
+        if (data.credit === "No One") {
+          var embed = new MessageBuilder()
+    .setTitle('Turtle Eliminated')
+    .setDescription('Name: '+turtle.name+"\n Location: "+turtle.location+"\n Found By: "+decodedClaims.name)
+    .setTimestamp();
+        } else {
+          var embed = new MessageBuilder()
+          .setTitle('Turtle Eliminated')
+          .setDescription('Name: '+turtle.name+"\n Location: "+turtle.location+"\n Found By: "+decodedClaims.name+"and 1 other")
+          .setTimestamp();
+          data.user.push(data.credit)
+          
+        }
+        hook.send(embed);
+      hook1.send(embed);
+      turtle_found(info, turtle.place, data.user)
+      var wembed;
       if (TTURTLES - tfound === 1) {
         var key = Array.from(turtles.keys())[0];
         turtles.get(key).place = 1
@@ -475,90 +512,82 @@ socket.on("report", function(data) {
          }
         });
 
+        var wembed = new MessageBuilder()
+      .setTitle('Winner!')
+      .setDescription('Name: '+turtles.get(key).name+"\n Location: "+turtles.get(key).location)
+      .setTimestamp();
+      hook.send(wembed);
+      hook1.send(wembed);
+        
+      }
+
+      
+      var tarr = Array.from(turtles)
+      writeStats(tarr, tfound, function () {
+        res.redirect("/")
+      })
+        
+      }).catch((error) => {
         var embed = new MessageBuilder()
+  .setTitle('Turtle Eliminated')
+  .setDescription('Name: '+turtle.name+"\n Location: "+turtle.location)
+  .setTimestamp();
+  turtle_found(info, turtle.place, [])
+  hook.send(embed);
+      hook1.send(embed);
+      var wembed;
+      if (TTURTLES - tfound === 1) {
+        var key = Array.from(turtles.keys())[0];
+        turtles.get(key).place = 1
+        turtles.get(key).title = "1st"
+        updatePlayerStats(info, turtles.get(key).uid, {games_won:1, games_played:1, top_place:1, badges:["GTHG Winner"]})
+        rank_pts = {1:25, 2:18, 3:15, 4:12, 5:10, 6:8, 7:6, 8:4, 9:2, 10:1}
+        turtles.forEach((key, value, map) => {
+          //console.log(key)
+           ws_rank = 0
+           if (key.place <= 10) {
+             ws_rank += rank_pts[key.place]
+
+           }
+           //console.log(ws_rank)
+           player_turtles_found = 0
+           if (info.found_turtles.hasOwnProperty(key.uid)) {
+             //console.log(info.found_turtles[key.uid])
+             ws_rank += info.found_turtles[key.uid][0]*2
+             ws_rank += info.found_turtles[key.uid][1]
+             player_turtles_found += info.found_turtles[key.uid][0] + info.found_turtles[key.uid][1]
+           }
+
+           if (key.hasOwnProperty("uid")) {
+             //console.log("hello")
+             updatePlayerStats(info, key.uid, {ws_rank:ws_rank, turtles_found:player_turtles_found})
+         }
+        });
+
+        var wembed = new MessageBuilder()
       .setTitle('Winner!')
       .setDescription('Name: '+turtles.get(key).name+"\n Location: "+turtles.get(key).location)
       .setTimestamp();
 
-        hook.send(embed);
-        hook1.send(embed);
+        
+      }
+      if (wembed !== undefined) {
+        hook.send(wembed);
+        hook1.send(wembed);
       }
       var tarr = Array.from(turtles)
-      // const options = {
-      // url: 'https://api.jsonbin.io/v3/b/611588c3e1b0604017aeac3f',
-      // body: {"turtles":tarr, "turtles_found":turtles_found},
-      // json: true,
-      // headers: {
-      //   'X-Master-Key' : "$2b$10$7BSegMZqcFv5YvHG8BijSuH1YO5MpPtGUcHvNIY4lrfqOWcA03Us2"
-      // }
-      // };
-      //
-      // request.put(options, (err, res, body) => {
-      //     if (err) {
-      //         return //console.log(err);
-      //     }
-      //     //console.log(body);
-      // });
       writeStats(tarr, tfound, function () {
-        socket.emit("refresh", data)
+        res.redirect("/")
       })
-    })
-
-
-  //  writeStats("turtles_found", turtles_found)
-
-
-  }
-})
-socket.on("register", function(data) {
-//  //console.log(data.user)
-  const hook = new Webhook("https://discord.com/api/webhooks/897330109571276892/S4Klq6pw9YEFgPt_QlhvSSmkK0CopIKaQ2IsQ50IGdbaPKXGcl94vf-e-INhOWUAdy-o");
-  ////console.log(req.query)
-  const embed = new MessageBuilder()
-.setTitle('New Player')
-.setDescription('Name: '+data.user.displayName+"\n Email: "+data.user.email)
-.setTimestamp();
-
-  hook.send(embed);
-  //addTurtle(data.user.displayName, data.user.uid, turtles)
-  joinPlayer(data.user.uid)
-  socket.emit("refresh", data)
-})
-//resetting
-//add
-socket.on("claimacc", function(data) {
-
-readStats(function (info) {
-  var accs = {"je83":{name:"Beckett S", games_won:1, games_played:1, top_place:1, most_turtles_found:0, turtles_found:3, ws_rank:31, badges:["GTHG Winner"]}, "iuwy":{name:"Beckett N", games_won:0, games_played:1, top_place:2, most_turtles_found:0, turtles_found:0, ws_rank:18},
-"bwuw":{name:"Eli", games_won:0, games_played:1, top_place:3, most_turtles_found:0, turtles_found:0, ws_rank:15}, "nwjw":{name:"Cameron", games_won:0, games_played:1, top_place:4, most_turtles_found:0, turtles_found:1.5, ws_rank:16}, "meiu":{name:"Zarin", games_won:0, games_played:1, top_place:5, most_turtles_found:0, turtles_found:0, ws_rank:10},
-"kmeh":{name:"Shade", games_won:0, games_played:1, top_place:6, most_turtles_found:1, turtles_found:13, ws_rank:23}, "kjsd":{name:"Teddy", games_won:0, games_played:1, top_place:7, most_turtles_found:0, turtles_found:0, ws_rank:6}, "jwhw":{name:"Shalen", games_won:0, games_played:1, top_place:8, most_turtles_found:0, turtles_found:0.5, ws_rank:5},
-"oieu":{name:"Teo", games_won:0, games_played:1, top_place:9, most_turtles_found:0, turtles_found:1, ws_rank:4}, "ljwy":{name:"Issy", games_won:0, games_played:1, top_place:10, most_turtles_found:0, turtles_found:0, ws_rank:1}, "nbyr":{name:"Logan", games_won:0, games_played:1, top_place:12, most_turtles_found:0, turtles_found:1, ws_rank:1}, "qiue":{name:"Alex", games_won:0, games_played:1, top_place:16, most_turtles_found:0, turtles_found:0, ws_rank:2}}
-  if (accs.hasOwnProperty(data.authCode)) {
-    var stats = accs[data.authCode]
-    delete stats.name
-    updatePlayerStats(info, data.pid, stats)
-  }
-})
-
-})
-
-socket.on("isPlayer", (data) => {
-// console.log(data)
-  readStats((info) => {
-    if (info.joining.includes(data.uid)) {
-      submittedUids((uids) => {
-        if (uids.includes(data.uid)) {
-          socket.emit("isP", {player:true, hidden:info.hidden, loc:true})
-        } else {
-          socket.emit("isP", {player:true, hidden:info.hidden, loc:false})
-        }
-        
       })
-      
-    } else {
-      socket.emit("isP", {player:false, hidden:info.hidden})
-    }
+    } 
+})
   })
-  
-})
-})
+// app.get('/login', (req, res) => {
+//   res.render('login.ejs', {})
+// })
+
+
+var server = app.listen(port)
+
+
