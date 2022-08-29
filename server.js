@@ -287,6 +287,7 @@ app.use(cookieParser())
 
     
     readStats(function(info) {
+      console.log(info.hidden)
       try {
       if (info.turtles[0] === "placeholder") { info.turtles = [] }
     } catch (err) {
