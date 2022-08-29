@@ -33,7 +33,7 @@ $().ready(function () {
 //   socket.on("refresh", function(data) {
 //     window.location.reload()
 //   })
-// //   socket.on("isP", (data) => {
+// //   socket.on("isP", (data) => {w
 // //     if (data.player) {
 // //       if (data.hidden === 0) {
 // //         $("#signup-body").hide()

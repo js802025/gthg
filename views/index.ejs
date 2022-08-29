@@ -84,7 +84,9 @@
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <li><a id="statspage" class="dropdown-item" href="/statistcs?pid=<%=uid%>">View Profile</a></li>
+    <%if (player && !loc) {%>
     <li id="submitloc"><a class="dropdown-item" data-bs-toggle="modal" href="#submitLocation">Submit Location</a></li>
+    <%} %>
     <li><a class="dropdown-item" data-bs-toggle="modal" href="#hallOfFame">Hall of Fame</a></li>
   </ul>
 </div>
@@ -363,6 +365,7 @@
           <input type="text" class="form-control" name="tID" placeholder="Turtle ID">
           <select name="floor" class="form-control mt-3" required>
             <option selected disabled>Floor...</option>
+            <option>2</option>
             <option>3</option>
             <option>4</option>
           </select>
@@ -375,6 +378,8 @@
             <option>Wavy</option>
             <option>Model Home (Bathrooms over Big Gym)</option>
             <option>Locker Room/New Gym Entrance</option>
+            <option>Auditorium Hallway (2nd Floor Only)</option>
+            <option>MS Dean Hallway/Hallway to Choir Room</option>
             <option>NE Stairwell (Outside MS Office)</option>
             <option>NW Stairwell (Main Entrance)</option>
             <option>SE Stairwell (MS Hallway/Art Hallway)</option>
@@ -430,16 +435,6 @@ Wavy Hallway (<i>Hall</i> of Fame)
   <script>
   ///  var socket = io()
   //socket.emit("isPlayer", {""})
-  firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    $("#uid").val(user.uid)
-    $("#displayName").val(user.displayName)
-    console.log(user.displayName)
-    socket.emit("isPlayer", {uid:user.uid})
-  } else {
-    // No user is signed in.
-  }
-});
     // $(document).ready(function () {
     //   var user = firebase.auth().currentUser
     //   console.log(user)
