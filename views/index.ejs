@@ -84,7 +84,7 @@
     Account
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a id="statspage" class="dropdown-item" href="/statistcs?pid=<%= uid%>">View Profile</a></li>
+    <li><a id="statspage" class="dropdown-item" href="/statistcs?pid=<%=uid%>">View Profile</a></li>
     <li id="submitloc"><a class="dropdown-item" data-bs-toggle="modal" href="#submitLocation">Submit Location</a></li>
     <li><a class="dropdown-item" data-bs-toggle="modal" href="#hallOfFame">Hall of Fame</a></li>
   </ul>
@@ -258,8 +258,9 @@
 <% } else { %>
 <p  class="card-text">Looking to join the Great Turtle Hiding Game?<br>
 <a href="#login" data-bs-toggle="modal">Click here</a> to create account!</p>
+</div>
 <% }} else if (hidden === 0) {%>
-    </div>
+    
     <div class="card-body" id="getturtle-body">
       <h5 class="card-title">You're signed up!</h5>
       <p class="card-text">Keep an eye out for an annoucement from the Game Managers on how to pick up your turtle!
@@ -386,6 +387,8 @@
           <label for="image" class="mt-3">Photo of the Location: </label>
           <input type="file" accepts="image/*" name="image" id="image" class="form-control">
           <p>MAKE SURE YOUR TURTLE IS IN A LEGAL HIDING SPOT(NO PRINTERS)</p>
+          <input type="hidden" name="uid" id="uid">
+          <input type="hidden" name="displayName" id="displayName">
         </div>
 
 <button type="submit" class="btn btn-primary mt-4" data-bs-dismiss="modal">Submit</button>
