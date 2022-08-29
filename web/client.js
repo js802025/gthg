@@ -27,46 +27,46 @@ $(function () {
 $().ready(function () {
 
 })
-var socket = io();
-socket.on('connect', function() {
-  console.log("Connected")
-  socket.on("refresh", function(data) {
-    window.location.reload()
-  })
-//   socket.on("isP", (data) => {
-//     if (data.player) {
-//       if (data.hidden === 0) {
-//         $("#signup-body").hide()
-//         $("#getturtle-body").show()
-//         $("#hiding-body").hide()
-//         $("#finding-body").hide()
-//         $("#submitloc").hide()
-//       } else if (data.hidden === 1) {
-//         if (!data.loc) {
-//           $("#signup-body").hide()
-//           $("#getturtle-body").hide()
-//           $("#hiding-body").show()
-//           $("#finding-body").hide()
-//           $("#submitloc").show()
-//         } else {
-//           $("#signup-body").hide()
-//           $("#getturtle-body").hide()
-//           $("#hiding-body").hide()
-//           $("#finding-body").show()
-//           $("#submitloc").hide()
-//         }
-//       }
-//     } else {
-//       $("#signup-body").show()
-//       $("#getturtle-body").hide()
-//       $("#hiding-body").hide()
-//       $("#finding-body").hide()
-//       $("#submitloc").hide()
-//       $("#register").modal("show")
-//     }
+// var socket = io();
+// socket.on('connect', function() {
+//   console.log("Connected")
+//   socket.on("refresh", function(data) {
+//     window.location.reload()
 //   })
+// //   socket.on("isP", (data) => {
+// //     if (data.player) {
+// //       if (data.hidden === 0) {
+// //         $("#signup-body").hide()
+// //         $("#getturtle-body").show()
+// //         $("#hiding-body").hide()
+// //         $("#finding-body").hide()
+// //         $("#submitloc").hide()
+// //       } else if (data.hidden === 1) {
+// //         if (!data.loc) {
+// //           $("#signup-body").hide()
+// //           $("#getturtle-body").hide()
+// //           $("#hiding-body").show()
+// //           $("#finding-body").hide()
+// //           $("#submitloc").show()
+// //         } else {
+// //           $("#signup-body").hide()
+// //           $("#getturtle-body").hide()
+// //           $("#hiding-body").hide()
+// //           $("#finding-body").show()
+// //           $("#submitloc").hide()
+// //         }
+// //       }
+// //     } else {
+// //       $("#signup-body").show()
+// //       $("#getturtle-body").hide()
+// //       $("#hiding-body").hide()
+// //       $("#finding-body").hide()
+// //       $("#submitloc").hide()
+// //       $("#register").modal("show")
+// //     }
+// //   })
 
- })
+//  })
 function report(data) {
 //  console.log(data)
   if (vm.user()) {
