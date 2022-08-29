@@ -17,9 +17,10 @@ var storage = multer.diskStorage({
 const upload = multer({ storage:storage 
   } )
 
-  const GAMES_URL = Buffer.from("aHR0cHM6Ly9wdGIuZGlzY29yZC5jb20vYXBpL3dlYmhvb2tzLzEwMTI5NDQwODU0ODI0NzE1MDQvY09RRjJ1b1VzTW83UWJ6Z2RZTjBsbVVwNTRoUGFUOWtzOWQzVi1fRDFVZ0VPelV6Qm9RX0R6TFFQU0F2RDc1VHQ5V3I=", "base64")
-  const TURTLE_URL = Buffer.from("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTAxMjk0NDM3NTE2NjI5MjAwOS9ORjl5V2xwc0pqOUszRjU5SVE1RDhDR0NRZ1N0d0g1M04ySUJrZEgtdk0yRk9SY0dEbGU0YlRkajJrcm1iQWF4ZmZPcQ", "base64")
-var firebase = require("firebase-admin");
+  const GAMES_URL = Buffer.from("aHR0cHM6Ly9wdGIuZGlzY29yZC5jb20vYXBpL3dlYmhvb2tzLzEwMTI5NDQwODU0ODI0NzE1MDQvY09RRjJ1b1VzTW83UWJ6Z2RZTjBsbVVwNTRoUGFUOWtzOWQzVi1fRDFVZ0VPelV6Qm9RX0R6TFFQU0F2RDc1VHQ5V3I=", "base64").toString()
+  const TURTLE_URL = Buffer.from("aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTAxMjk0NDM3NTE2NjI5MjAwOS9ORjl5V2xwc0pqOUszRjU5SVE1RDhDR0NRZ1N0d0g1M04ySUJrZEgtdk0yRk9SY0dEbGU0YlRkajJrcm1iQWF4ZmZPcQ", "base64").toString()
+
+  var firebase = require("firebase-admin");
 
 var firebase_details = require("./gthg-8b42f-firebase-adminsdk-mdi6c-19234d5833.json")
 firebase_details.private_key_id = process.env.PRIVATE_KEY_ID
