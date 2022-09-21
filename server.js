@@ -326,7 +326,12 @@ app.use(cookieParser())
         wsranks.sort(function(a, b) {
           if (a[1] < b[1]) {
             return 1
-          } else {
+          } else if ((info.statistics[a[0]].games_won > 0 || info.statistics[b[0]].games_won > 0) && a[1] === b[1]) {
+            if (info.statistics[a[0]].games_won < info.statistics[b[0]].games_won) {
+              return 1
+            } else {
+              return -1
+            }} else {
             return -1
           }
         })

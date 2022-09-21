@@ -83,11 +83,11 @@
     Account
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-    <li><a id="statspage" class="dropdown-item" href="/statistcs?pid=<%=uid%>">View Profile</a></li>
+    <li><a id="statspage" class="dropdown-item" href="/statistics?pid=<%=uid%>">View Profile</a></li>
     <%if (player && !loc) {%>
     <li id="submitloc"><a class="dropdown-item" data-bs-toggle="modal" href="#submitLocation">Submit Location</a></li>
     <%} %>
-    <li><a class="dropdown-item" data-bs-toggle="modal" href="#hallOfFame">Hall of Fame</a></li>
+    
   </ul>
 </div>
 <% } else { %>
@@ -167,7 +167,7 @@
 
   <main class="px-3">
     <h1>The Great Turtle Hiding Game</h1>
-    <p class="lead">Track the competition!<br><a href="#aboutGTHG" data-bs-toggle="modal">About</a><br><a href="https://docs.google.com/document/d/1XlqmxJSJE_spiXInrudxKFxHItXR1vZb70u-UEalUbo/edit?usp=sharing">Rules & Regulations</a></p>
+    <p class="lead">Track the competition!<br><a href="#aboutGTHG" data-bs-toggle="modal">About</a><br><a data-bs-toggle="modal" href="#hallOfFame">Hall of Fame</a><br><a target="_blank" href=https://docs.google.com/document/d/1Ipue1XgX8nGWQxcvC8wxkpoNRp5r6mKi7EXYXYCThOA/edit?usp=sharing">Rules & Regulations</a></p>
   </main>
   <div class="container justify-content-center">
     <% if (turtles.size > 0 && signUps === false) { %>
@@ -408,11 +408,11 @@
         <h5 class="modal-title" id="exampleModalLongTitle">Hall of Fame</h5>
       </div>
       <div class="modal-body">
-        Taki Chronopoulos (two time champion and honorary turtle master (1st and 2nd edition))
-Beckett S. (two time champion)
-Section C (Champions (Covid-safe edition))
-Shade Rothkopf (three time runner-up, most prolific turtle finder)
-Chairs (winning hiding spot (1st and 2nd edition)) 
+        Taki Chronopoulos (two time champion and honorary turtle master (1st and 2nd edition))<br>
+Beckett S. (two time champion)<br>
+Section C (Champions (Covid-safe edition))<br>
+Shade Rothkopf (three time runner-up, most prolific turtle finder)<br>
+Chairs (winning hiding spot (1st and 2nd edition))<br>
 Wavy Hallway (<i>Hall</i> of Fame)
     </div>
   </div>
