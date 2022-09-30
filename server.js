@@ -454,10 +454,26 @@ app.post("/report", (req, res) => {
       tfound = info.turtles_found
       TTURTLES = info.total_turtles
       turtle = turtles.get(data.id)
-      turtles.delete(data.id)
+     // turtles.delete(data.id)
       turtle.place = TTURTLES - tfound
       turtle.title = ordinal_suffix_of(TTURTLES - tfound)
-      turtles = insertAtIndex(TTURTLES - tfound - 1, data.id, turtle, turtles)
+      turtles.set(data.id, turtle)
+      turtles.sort((a, b) => {
+        if (a[1].hasOwnProperty("place") && b[1].hasOwnProperty("place")) {
+          if (a[1].place > b[1].place) {
+            return 1
+          } else {
+            return -1
+          }
+        } else if (a[1].hasOwnProperty("place") && !b[1].hasOwnProperty("place")) {
+          return 1
+        } else if (!a[1].hasOwnProperty("place") && b[1].hasOwnProperty("place")) {
+          return -1
+        } else {
+          return 0
+        }
+      })
+      //turtles = insertAtIndex(TTURTLES - tfound - 1, data.id, turtle, turtles)
       tfound += 1
       const hook = new Webhook(GAMES_URL);
       const hook1 = new Webhook(TURTLE_URL);
