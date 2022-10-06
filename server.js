@@ -275,6 +275,40 @@ async function addTurtleLocation(user, location, callback) {
 //   info = readStats()
 //   callback(info)
 // }
+function overturn(code) {
+  readStats(function(data) {
+    var turtles = new Map(data.turtles)
+    var turtle = turtles.get(code)
+    delete turtle.place
+    turtle.title = "Hidden"
+    turtles.set(code, turtle)
+    turtles = new Map([...turtles].sort((a, b) => {
+        if (a[1].hasOwnProperty("place") && b[1].hasOwnProperty("place")) {
+          if (a[1].place > b[1].place) {
+            return 1
+          } else {
+            return -1
+          }
+        } else if (a[1].hasOwnProperty("place") && !b[1].hasOwnProperty("place")) {
+          return 1
+        } else if (!a[1].hasOwnProperty("place") && b[1].hasOwnProperty("place")) {
+          return -1
+        } else {
+          return 0
+        }
+      }))
+      var tarr = Array.from(turtles)
+      writeStats(tarr, data.turtles_found-1, function () {
+        console.log("Overturned Finding Of "+turtle.name)
+        console.log("Make sure to change place in firebase, and remove finding credits")
+      })
+    
+    //writeStats(turtles, data.turtles_found, function() {})
+  })
+}
+//overturn("8289")
+
+
 const cookieParser = require('cookie-parser')
 app.use(express.urlencoded({limit: '100mb', extended: true, parameterLimit: 1000000}));
 app.set('views', __dirname + '/views');
