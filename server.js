@@ -306,13 +306,12 @@ function overturn(code) {
     //writeStats(turtles, data.turtles_found, function() {})
   })
 }
-//overturn("8289")
-
 
 const cookieParser = require('cookie-parser')
 app.use(express.urlencoded({limit: '100mb', extended: true, parameterLimit: 1000000}));
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/web'));
+app.use(express.static(__dirname + '/dist'));
 app.use(cookieParser())
 
 
