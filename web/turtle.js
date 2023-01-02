@@ -29,7 +29,7 @@ const scene = new THREE.Scene();
             scene.add(pivot);
             var turtle;
              const loader = new GLTFLoader()
-            loader.load('/turtle1.glb', function (gltf) {
+            loader.load('https://firebasestorage.googleapis.com/v0/b/gthg-8b42f.appspot.com/o/turtle1.glb?alt=media&token=fda98c87-028f-4308-802b-3d79043833b4', function (gltf) {
                  turtle = gltf.scene || gltf.scenes[ 0 ];
                const box = new THREE.Box3().setFromObject(turtle);
                const size = box.getSize(new THREE.Vector3()).length();
