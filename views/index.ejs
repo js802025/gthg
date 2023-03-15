@@ -475,7 +475,7 @@ Wavy Hallway (<i>Hall</i> of Fame)
       firebase.auth.Auth.Persistence.NONE);
 
       $("#loginButton").on("click", () => {
-        var provider = new GoogleAuthProvider();
+        var provider = new firebase.auth().GoogleAuthProvider();
         firebase.auth()
   .signInWithPopup(provider)
   .then((result) => {
