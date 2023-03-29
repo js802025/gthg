@@ -223,7 +223,7 @@ async function submittedUids(callback) {
   //const auth = new GoogleAuth(
    //   {scopes: 'https://www.googleapis.com/auth/spreadsheet'});
 
-  var doc = new GoogleSpreadsheet("1bUQC1dP8AccCWSOUjNvZBGMBpfhniDGCOFscuIPxb9o")
+  var doc = new GoogleSpreadsheet("1XtWgB7vgiGlv8KfAbCpXGfXov_ltkSCwCaVRHnkEhSQ")
   //console.log("hello")
   await doc.useServiceAccountAuth(gc_details)
   await doc.loadInfo()
@@ -248,7 +248,7 @@ async function addTurtleLocation(user, location, callback) {
   //const auth = new GoogleAuth(
    //   {scopes: 'https://www.googleapis.com/auth/spreadsheet'});
 
-  var doc = new GoogleSpreadsheet("1bUQC1dP8AccCWSOUjNvZBGMBpfhniDGCOFscuIPxb9o")
+  var doc = new GoogleSpreadsheet("1XtWgB7vgiGlv8KfAbCpXGfXov_ltkSCwCaVRHnkEhSQ")
   //console.log("hello")
   await doc.useServiceAccountAuth(gc_details)
   await doc.loadInfo()
