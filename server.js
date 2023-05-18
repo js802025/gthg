@@ -6,6 +6,8 @@ const request = require('request');
 const multer = require("multer")
 const dotenv = require('dotenv');
 dotenv.config();
+
+//load storage
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
   cb(null, "/tmp/")
