@@ -30,6 +30,19 @@ function readStats(callback) {
   });
   }
 
+  function addNameToStats() {
+    readStats(function(data) {
+      var stats = data.statistics
+      Object.entries(stats).forEach(([key, value]) => {
+        firebase.auth().getUser(key).then((user) => {
+          firebase.database().ref('statistics/' + key + '/name').set(user.displayName).then(() => {
+            console.log(user.displayName)
+          })
+        })
+      })
+    })
+  }
+addNameToStats()
 //   readStats(function(data) {
 //     console.log(data.turtles)
 //   })

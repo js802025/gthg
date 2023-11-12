@@ -1,40 +1,49 @@
 {
+  "name": "gthg",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "cookie-parser": "^1.4.6",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.0",
     "discord-webhook-node": "^1.1.8",
-    "dotenv": "^16.0.1",
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "firebase-admin": "^11.0.1",
-    "fs": "^0.0.1-security",
-    "google-auth-library": "^8.0.2",
-    "google-spreadsheet": "^3.3.0",
-    "html": "^1.0.0",
-    "json": "^10.0.0",
-    "multer": "^1.4.5-lts.1",
-    "request": "^2.88.2",
-    "three": "^0.148.0"
+    "dotenv": "^16.3.1",
+    "firebase": "^9.23.0",
+    "firebase-admin": "^11.9.0",
+    "react": "^18.2.0",
+    "react-countdown": "^2.3.5",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.0",
+    "react-scripts": "5.0.1",
+    "sass": "^1.63.4",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node server.js",
-    "build": "webpack --mode=development"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
-  "name": "gthg",
-  "version": "1.0.0",
-  "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/js802025/gthg.git"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/js802025/gthg/issues"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
-  "homepage": "https://github.com/js802025/gthg#readme",
-  "description": "",
   "devDependencies": {
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "@craco/craco": "^7.1.0"
   }
 }
