@@ -107,7 +107,7 @@ function PlayerCard({player, uid}) {
   <h2 class="placeShow ">#{player.place}</h2>
   <img className='xShow' style={{"width":"200px"}}src="https://cdn.discordapp.com/attachments/803804130182692965/1120207950418546808/thign.png"></img>
   <div class="card-body">
-    <h5 className='' style={{fontWeight:"bold"}}>{player.name}</h5>
+    <h5 className='t' style={{fontWeight:"bold"}}>{player.name}</h5>
     
   </div>
 </div>
