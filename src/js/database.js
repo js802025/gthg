@@ -20,7 +20,7 @@ function registerUser(user) {
                     }]
                 }
     
-            fetch (GAMES_URL, {
+            fetch (window.location.href+'api/embed', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -169,13 +169,13 @@ function reportTurtle(uid, tID, credit=[]) {
                                 }]
                             }
                 
-                        fetch (GAMES_URL, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(content)
-                        }).then((response) => {
+                            fetch (window.location.href+'api/embed', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(content)
+                            }).then((response) => {
                             var turtlesFound = Object.entries(turtles).filter(([key, value]) => {if (value.hasOwnProperty("found")) return true; else return false;}).length;
                             console.log(Object.entries(turtles).length- turtlesFound === 1);
                             if (Object.entries(turtles).length- turtlesFound === 1) {
