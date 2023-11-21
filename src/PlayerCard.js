@@ -10,7 +10,6 @@ function PlayerCard({player, uid}) {
     useEffect(() => {
         getPortalPic(player.uid).then((portalPic) => {
             setPortalPic(portalPic);
-            console.log(portalPic);
         });
         isAdmin(uid).then((a) => {
             setAdmin(a);

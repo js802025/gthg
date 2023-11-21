@@ -48,7 +48,7 @@ function Location({user}) {
             </div>
           <textarea class="form-control mt-3 mx-auto" name="desc" id="desc" placeholder="Description of Location" style={{maxWidth:"500px"}}></textarea>
           <label for="image" class="mt-3">Photo of the Location: </label>
-          <input type="file" accepts="image/*" name="image" id="image" class="form-control mx-auto" style={{maxWidth:"500px"}}/>
+          <input type="file" accepts="image/jpeg" name="image" id="image" class="form-control mx-auto" style={{maxWidth:"500px"}}/>
           <p>MAKE SURE YOUR TURTLE IS IN A LEGAL HIDING SPOT(NO PRINTERS)</p>
           <input type="hidden" name="uid" id="uid"/>
           <input type="hidden" name="displayName" id="displayName"/>
