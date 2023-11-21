@@ -44,7 +44,7 @@ function TurtlesFound() {
                 }
             }
             finders = Object.entries(finders).sort((a, b) => b[1].top*2+b[1].under - a[1].top*2+a[1].under);
-            console.log(turtlesSorted);
+         //   console.log(turtlesSorted);
             setFinders(finders);
         });
     }, [])

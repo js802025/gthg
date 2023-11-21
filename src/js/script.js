@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { registerUser } from "./database";
+import { getTurtles, registerUser } from "./database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,7 +29,12 @@ function join() {
         registerUser(getAuth().currentUser);
     } else {
         signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
-            registerUser(result.user);
+            getTurtles().then((turtles) => {
+                if (turtles === null) turtles = {};
+                if (!turtles.hasOwnProperty(result.user.uid)) {
+                    registerUser(result.user);
+                }
+            });
         }).catch((error) => {
             console.log(error);
         });

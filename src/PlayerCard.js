@@ -46,7 +46,7 @@ function PlayerCard({player, uid}) {
     <h2>Set Profile Picture</h2>
     <input type="text" id="portalPic"  className='form-control'></input>
     <button onClick={() => {
-        setProfilePic(uid, document.getElementById("portalPic").value);
+        setProfilePic(player.uid, document.getElementById("portalPic").value);
     }} className="btn btn-primary">Set</button>
 
 <div>
@@ -84,8 +84,9 @@ function PlayerCard({player, uid}) {
     <div class="card-body">
     <h2>Set Profile Picture</h2>
     <input type="text" id="portalPic"  className='form-control'></input>
-    <button onClick={() => {
-        setProfilePic(uid, document.getElementById("portalPic").value);
+    <button onClick={(e) => {
+      console.log(e.target.parentElement);
+        setProfilePic(player.uid, e.target.parentElement.getElementsByTagName("input")[0].value);
     }} className="btn btn-primary">Set</button>
     
 </div>
