@@ -15,6 +15,8 @@ function WSRank() {
                 }
                 return b[1].ws_rank - a[1].ws_rank;
             });
+            sortedPlayers = sortedPlayers.filter(([key, value]) => value.ws_rank > 0);
+            console.log(sortedPlayers);
             setPlayers(sortedPlayers);
         })
         }, []);
