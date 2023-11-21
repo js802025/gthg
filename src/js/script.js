@@ -41,4 +41,12 @@ function join() {
     }
 }
 
-export { join };
+function login() {
+    signInWithPopup(auth, new GoogleAuthProvider()).then((result) => {
+
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+export { join, login };

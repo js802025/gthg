@@ -14,6 +14,7 @@ function Location({user}) {
           <input type="text" class="form-control mx-auto" name="tID" id="tID" placeholder="Turtle ID" style={{maxWidth:"500px"}}/>
           <select name="floor" id="floor" class="form-control mt-3 mx-auto" required style={{maxWidth:"500px"}}>
             <option selected disabled>Floor...</option>
+            <option>1</option>
             <option>2</option>
             <option>3</option>
             <option>4</option>
@@ -22,7 +23,7 @@ function Location({user}) {
             <option selected disabled>Hallway...</option>
             <option>North (Catboxes/Main)</option>
             <option>East (Art)</option>
-            <option>South (New Gym)</option>
+            <option>South (New Gym/Library/Math Wing)</option>
             <option>West (Languages/History and English)</option>
             <option>Wavy</option>
             <option>Model Home (Bathrooms over Big Gym)</option>
@@ -69,6 +70,8 @@ function Location({user}) {
             image.src = "https://i.ibb.co/zJcvY1g/FWP-2nd-FL-Plan-11x17-RD-10-27-17-2.png"
         } else if (document.getElementById("floor").value === "3") {
             image.src = "https://i.ibb.co/qj79Jhh/FWP-3rd-FL-Plan-11x17-1.png";
+        } else if (document.getElementById("floor").value === "1") {
+            image.src = "https://cdn.discordapp.com/attachments/693929343638044702/1176662745790283776/image.png?ex=656faf93&is=655d3a93&hm=5c2759caf8099123f8a4c8cabc337bdaeacd03b195ebf9b4ff88314adaff3817&";
         } else {
             image.src = "https://i.ibb.co/wdky6T0/FWP-4th-FL-Plan-11x17-1.png";
         }

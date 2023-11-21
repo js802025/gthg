@@ -1,6 +1,6 @@
 import { get } from 'firebase/database';
 import React, {useState, useEffect} from 'react';
-import { getPortalPic, setProfilePic, isAdmin, verify, getTurtles } from './js/database';
+import { getPortalPic, setProfilePic, isAdmin, verify, getTurtles, downloadFile } from './js/database';
 
 
 function PlayerCard({player, uid}) {
@@ -13,10 +13,10 @@ function PlayerCard({player, uid}) {
             console.log(portalPic);
         });
         isAdmin(uid).then((a) => {
-            console.log(a);
             setAdmin(a);
         });
         getTurtles().then((turtles) => {
+
             setTurtles(turtles);
         });
 
@@ -53,6 +53,11 @@ function PlayerCard({player, uid}) {
     <h5>Floor: {player.loc.floor}</h5>
     <h5>Hallway: {player.loc.hallway}</h5>
     <p>Description: {player.loc.desc}</p>
+    <img src={"https://firebasestorage.googleapis.com/v0/b/gthg-8b42f.appspot.com/o/turtles%2F"+player.uid+"-"+player.id+"?alt=media"} className='img-fluid' alt="..."/>
+    <svg className="mt-3" >
+      <image href={player.loc.floor === "1" ? "https://cdn.discordapp.com/attachments/693929343638044702/1176662745790283776/image.png?ex=656faf93&is=655d3a93&hm=5c2759caf8099123f8a4c8cabc337bdaeacd03b195ebf9b4ff88314adaff3817&" : player.loc.floor === "2" ? "https://i.ibb.co/zJcvY1g/FWP-2nd-FL-Plan-11x17-RD-10-27-17-2.png" : player.loc.floor === "3" ? "https://i.ibb.co/qj79Jhh/FWP-3rd-FL-Plan-11x17-1.png" : player.loc.floor === "4" ? "https://i.ibb.co/wdky6T0/FWP-4th-FL-Plan-11x17-1.png" : null} x="0" y="0" height="100%" width="100%"/>
+      <circle cx={(player.loc.coords.x*100/340)+"%"} cy={(player.loc.coords.y*100/220)+"%"} r="5" stroke="red" stroke-width="3" fill="red" />
+    </svg>
     </div>
     
 </div>
@@ -85,7 +90,6 @@ function PlayerCard({player, uid}) {
     <h2>Set Profile Picture</h2>
     <input type="text" id="portalPic"  className='form-control'></input>
     <button onClick={(e) => {
-      console.log(e.target.parentElement);
         setProfilePic(player.uid, e.target.parentElement.getElementsByTagName("input")[0].value);
     }} className="btn btn-primary">Set</button>
     

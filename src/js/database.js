@@ -1,6 +1,6 @@
 import { getAuth } from "firebase/auth";
 import { getDatabase, ref, set, get, onValue, update} from "firebase/database";
-import { getStorage, ref as sRef, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref as sRef, uploadBytes } from "firebase/storage";
 
 const GAMES_URL = atob("aHR0cHM6Ly9wdGIuZGlzY29yZC5jb20vYXBpL3dlYmhvb2tzLzEwMTI5NDQwODU0ODI0NzE1MDQvY09RRjJ1b1VzTW83UWJ6Z2RZTjBsbVVwNTRoUGFUOWtzOWQzVi1fRDFVZ0VPelV6Qm9RX0R6TFFQU0F2RDc1VHQ5V3I=", "base64").toString()
 
@@ -238,5 +238,15 @@ function getGameState() {
     });
 }
 
+function downloadFile(uid, id) {
+    return new Promise((resolve, reject) => {
+        getDownloadURL(sRef(getStorage(), id)).then((url) => {
+            resolve([uid, url]);
+        }
+        )
+    }
+    )
+}
 
-export { registerUser, getTurtles, watchTurtles, getPortalPic, isAdmin, setProfilePic, submitLoc, uploadFile, reportTurtle, verify, getCountdown, getStatistics, getGameState};
+
+export { registerUser, getTurtles, watchTurtles, getPortalPic, isAdmin, setProfilePic, submitLoc, uploadFile, reportTurtle, verify, getCountdown, getStatistics, getGameState, downloadFile};

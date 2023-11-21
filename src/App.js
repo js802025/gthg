@@ -4,7 +4,7 @@ import PlayerCard from './PlayerCard';
 import "bootstrap"
 import { getAuth } from "firebase/auth";
 import { useEffect, useState } from 'react';
-import { join } from './js/script';
+import { join, login } from './js/script';
 import { getGameState, watchTurtles } from './js/database';
 import Location from './Location';
 import Report from './Report';
@@ -44,7 +44,7 @@ function App() {
             }
         }
     })
-    console.log(turtlesSorted);
+    //console.log(turtlesSorted);
     setSortedTurtles(turtlesSorted);
     })
 
@@ -61,9 +61,15 @@ function App() {
     <a class="navbar-brand">
       <img src="https://cdn.discordapp.com/attachments/803804130182692965/1125976804600070215/turtlewpaper.png" alt="GTHG" width="40" height="30"/>
     </a>
-    <button type="button" className="btn pl-4 text-light" style={{backgroundColor: "#FA321D"}} data-bs-toggle="modal" data-bs-target="#report">
+    <div className='d-flex flex-row-reverse' >
+      {user === null &&
+    <button type="button" className="btn pl-4 text-light btn-primary" onClick={login}>
+          Login
+        </button>}
+    <button type="button" className="btn pl-4 ms-2 me-2 text-light" style={{backgroundColor: "#FA321D"}} data-bs-toggle="modal" data-bs-target="#report">
           Report a Turtle
         </button>
+        </div>
   </div>
    
         {user && <Report user={user}></Report>}
