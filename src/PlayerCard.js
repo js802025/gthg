@@ -51,7 +51,7 @@ function PlayerCard({player, uid}) {
 <div>
     <h5>Floor: {player.loc.floor}</h5>
     <h5>Hallway: {player.loc.hallway}</h5>
-    <p>Description: {player.loc.desc}</p>
+    <p>Description: {player.loc.desc}</p> 
     <img src={"https://firebasestorage.googleapis.com/v0/b/gthg-8b42f.appspot.com/o/turtles%2F"+player.uid+"-"+player.id+"?alt=media"} className='img-fluid' alt="..."/>
     <svg className="mt-3" >
       <image href={player.loc.floor === "1" ? "https://cdn.discordapp.com/attachments/693929343638044702/1176662745790283776/image.png?ex=656faf93&is=655d3a93&hm=5c2759caf8099123f8a4c8cabc337bdaeacd03b195ebf9b4ff88314adaff3817&" : player.loc.floor === "2" ? "https://i.ibb.co/zJcvY1g/FWP-2nd-FL-Plan-11x17-RD-10-27-17-2.png" : player.loc.floor === "3" ? "https://i.ibb.co/qj79Jhh/FWP-3rd-FL-Plan-11x17-1.png" : player.loc.floor === "4" ? "https://i.ibb.co/wdky6T0/FWP-4th-FL-Plan-11x17-1.png" : null} x="0" y="0" height="100%" width="100%"/>
