@@ -60,7 +60,7 @@ function App() {
       <div class="container">
     <a class="navbar-brand">
       <img src="https://cdn.discordapp.com/attachments/803804130182692965/1125976804600070215/turtlewpaper.png" alt="GTHG" width="40" height="30"/>
-    </a>
+    </a> 
     <div className='d-flex flex-row-reverse' >
       {user === null &&
     <button type="button" className="btn pl-4 text-light btn-primary" onClick={login}>
