@@ -115,6 +115,8 @@ function Location({user}) {
         uploadFile(user.uid+"-"+document.getElementById("tID").value, document.getElementById("image").files[0]).then((data) => {
             console.log(data);
             submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, data.metadata.fullPath, coords);
+        }).catch((err) => {
+            submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, null, coords);
         })
     }
 

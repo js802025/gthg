@@ -248,5 +248,56 @@ function downloadFile(uid, id) {
     )
 }
 
+function mergeAccounts(uid1, uid2) {
+    getStatistics().then((stats) => {
+        var stats1 = stats[uid1];
+        var stats2 = stats[uid2];
+        var statsMerged = {};
+        for (var key in stats1) {
+            if (stats2.hasOwnProperty(key)) {
+                if (key === "games_played" || key === "games_won") {
+                    statsMerged[key] = stats1[key] + stats2[key];
+                } else if (key === "top_place") {
+                    if (stats1[key] === 0) {
+                        statsMerged[key] = stats2[key];
+                    } else if (stats2[key] === 0) {
+                        statsMerged[key] = stats1[key];
+                    } else {
+                    statsMerged[key] = Math.min(stats1[key], stats2[key]);
+                    }
+                } else if (key === "turtles_found") {
+                    statsMerged[key] = stats1[key] + stats2[key];
+                } else if (key === "most_turtles_found") {
+                    statsMerged[key] = Math.max(stats1[key], stats2[key]);
+                } else if (key === "ws_rank") {
+                    statsMerged[key] = stats1[key] + stats2[key];
+                } else if (key === "badges") {
+                    statsMerged[key] = [...new Set(stats1[key].concat(stats2[key]))];
+                }
+            } else {
+                statsMerged[key] = stats1[key];
+            }
+        }
+        for (var key in stats2) {
+            if (!stats1.hasOwnProperty(key)) {
+                statsMerged[key] = stats2[key];
+            }
+        }
+        console.log(statsMerged);
+        var stats2Merge = {};
+        if (stats1.hasOwnProperty("portalPic")) {
+            stats2Merge["portalPic"] = stats1["portalPic"];
+        } else if (stats2.hasOwnProperty("portalPic")) {
+            stats2Merge["portalPic"] = stats2["portalPic"];
+        }
+        const db = getDatabase();
+        update(ref(db, 'statistics/' + uid1), statsMerged).then(() => {
+            set(ref(db, 'statistics/' + uid2), null).then(() => {
+                console.log("Merged");
+            })
+        })
+    })
+}
 
-export { registerUser, getTurtles, watchTurtles, getPortalPic, isAdmin, setProfilePic, submitLoc, uploadFile, reportTurtle, verify, getCountdown, getStatistics, getGameState, downloadFile};
+
+export { registerUser, getTurtles, watchTurtles, getPortalPic, isAdmin, setProfilePic, submitLoc, uploadFile, reportTurtle, verify, getCountdown, getStatistics, getGameState, downloadFile, mergeAccounts};

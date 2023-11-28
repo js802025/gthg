@@ -44,8 +44,13 @@ function PlayerCard({player, uid}) {
     <div class="card-body">
     <h2>Set Profile Picture</h2>
     <input type="text" id="portalPic"  className='form-control'></input>
-    <button onClick={() => {
-        setProfilePic(player.uid, document.getElementById("portalPic").value);
+    <button onClick={(e) => {
+       setProfilePic(player.uid, e.target.parentElement.getElementsByTagName("input")[0].value).then(() => {
+        alert("Set Profile Picture");
+    }
+    ).catch((err) => {
+        alert(err);
+    })
     }} className="btn btn-primary">Set</button>
 
 <div>
@@ -89,7 +94,12 @@ function PlayerCard({player, uid}) {
     <h2>Set Profile Picture</h2>
     <input type="text" id="portalPic"  className='form-control'></input>
     <button onClick={(e) => {
-        setProfilePic(player.uid, e.target.parentElement.getElementsByTagName("input")[0].value);
+        setProfilePic(player.uid, e.target.parentElement.getElementsByTagName("input")[0].value).then(() => {
+            alert("Set Profile Picture");
+        }
+        ).catch((err) => {
+            alert(err);
+        })
     }} className="btn btn-primary">Set</button>
     
 </div>
