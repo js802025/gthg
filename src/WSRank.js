@@ -4,7 +4,6 @@ import { getAuth } from "@firebase/auth";
 function WSRank() {
     const [players, setPlayers] = useState(0);
     const [admin, setAdmin] = useState(false);
-    const [player, setPlayer] = useState(0);
     const auth = getAuth();
 
     useEffect(() => {
@@ -22,10 +21,10 @@ function WSRank() {
             console.log(sortedPlayers);
             setPlayers(sortedPlayers);
         })
+        if (auth.currentUser) {
         isAdmin(auth.currentUser.uid).then((admin) => {
             setAdmin(admin);
-        })
-        setPlayer(auth.currentUser.uid);
+        })}
         }, []);
     if (players === 0) return;
     return (
