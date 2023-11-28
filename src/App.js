@@ -33,17 +33,23 @@ function App() {
                 return a[1].found.at - b[1].found.at;
             } else {
               console.log("a");
-                return 1;
+                return -1;
             }
         } else {
             if (b[1].hasOwnProperty("found")) {
-                return 1;
+                return -1;
             } else {
               console.log("b");
+              if (!a[1].hasOwnProperty("loc")) {
+                return 1;
+              } else if (!b[1].hasOwnProperty("loc")) {
+                return -1;
+              }else {
                 return 0;
+              }
             }
         }
-    })
+    }).reverse().filter((val) => val[1].hasOwnProperty("loc"))
     //console.log(turtlesSorted);
     setSortedTurtles(turtlesSorted);
     })

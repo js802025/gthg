@@ -15,7 +15,7 @@ function PlayerCard({player, uid}) {
             setAdmin(a);
         });
         getTurtles().then((turtles) => {
-
+            
             setTurtles(turtles);
         });
 
