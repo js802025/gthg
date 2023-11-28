@@ -116,7 +116,7 @@ function Location({user}) {
             console.log(data);
             submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, data.metadata.fullPath, coords);
         }).catch((err) => {
-            submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, null, coords);
+            submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, null, coords); 
         })
     }
 
