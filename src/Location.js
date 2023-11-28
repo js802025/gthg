@@ -112,12 +112,13 @@ function Location({user}) {
     }
 
     function handleSubmit() {
-        uploadFile(user.uid+"-"+document.getElementById("tID").value, document.getElementById("image").files[0]).then((data) => {
-            console.log(data);
-            submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, data.metadata.fullPath, coords);
-        }).catch((err) => {
+     //   uploadFile(user.uid+"-"+document.getElementById("tID").value, document.getElementById("image").files[0]).then((data) => {
+       //     console.log(data);
+        //    submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, data.metadata.fullPath, coords);
+        //}).catch((err) => {
+          console.log("UPLOAD ERR:");
             submitLoc(user.uid, document.getElementById("tID").value, document.getElementById("floor").value, document.getElementById("hallway").value, document.getElementById("desc").value, null, coords); 
-        })
+       // })
     }
 
 }
