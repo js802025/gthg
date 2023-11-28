@@ -112,7 +112,7 @@ function App() {
             <PlayerCard player={{place:value.hasOwnProperty("loc") ? value.hasOwnProperty("found") ? index+1 : "Hidden" : "Not Hidden", uid:key, ...value}} uid={user ?user.uid: null}></PlayerCard>
           ))}
           </div>
-          <TurtlesFound/>
+          <TurtlesFound turtlesSorted={sortedTurtles}/>
           <WSRank/>
           
     </div>

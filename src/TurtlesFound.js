@@ -1,27 +1,12 @@
 import { useEffect, useState } from "react"
 import { getTurtles } from "./js/database"
 
-function TurtlesFound() {
+function TurtlesFound({turtlesSorted}) {
     const [finders, setFinders] = useState(0)
     useEffect(() => {
         getTurtles().then((turtles) => {
             var finders = {}
             if (turtles === null) turtles = {};
-            var turtlesSorted = Object.entries(turtles).sort((a, b) => {
-                if (a[1].hasOwnProperty("found")) {
-                    if (b[1].hasOwnProperty("found")) {
-                        return a[1].found.at - b[1].found.at;
-                    } else {
-                        return -1;
-                    }
-                } else {
-                    if (b[1].hasOwnProperty("found")) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
-                }
-            })
             for (var key in turtlesSorted) {
                 var turtle = turtlesSorted[key][1];
                 if (turtle.hasOwnProperty("found")) {
@@ -43,8 +28,7 @@ function TurtlesFound() {
                     }
                 }
             }
-            finders = Object.entries(finders).sort((a, b) => b[1].top*2+b[1].under - a[1].top*2+a[1].under);
-         //   console.log(turtlesSorted);
+            finders = Object.entries(finders).sort((a, b) => (b[1].under+(2*b[1].top)) - (a[1].under+(2*a[1].top)));
             setFinders(finders);
         });
     }, [])
