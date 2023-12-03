@@ -110,9 +110,15 @@ function PlayerCard({player, uid}) {
           </div>)
 
     } else {
+      if (player.found.hasOwnProperty("by")) {
       var finders = player.found.by.map((finder) => {
         return turtles[finder].name
       })
+    } else {
+      var finders = [
+        "Anonymous"
+      ];
+    }
         return (
         <div className='col-sm-4 mt-2 mx-auto justify-content-center'>
             <a data-bs-toggle="modal" data-bs-target={"#player"+player.name.replaceAll(" ", "")}>
@@ -137,23 +143,24 @@ function PlayerCard({player, uid}) {
   <div class="card-body">
     <h5 className='' style={{fontWeight:"bold"}}>{player.name}</h5>
     <h5>Found By: {finders.join(", ")}</h5>
-    {player.found.verified ? <div>
+    {(player.found.verified || admin) ? <div>
     <h5>Floor: {player.loc.floor}</h5>
     <h5>Hallway: {player.loc.hallway}</h5>
     <p>Description: {player.loc.desc}</p>
-    </div>: <div>
+    {admin && !player.found.verified && <button className="btn btn-primary" onClick={() => {
+      console.log(player.uid);
+      verify(player.uid)}}>Verify</button>}
+    </div>
+    : <div>
 
     <p>Location: Verification Pending</p>
-    {admin && <button className="btn btn-primary" onClick={() => {
-      console.log(player.uid);
-      verify(player.uid)}}>Verify</button>}</div>}
     
-    </div>
+    
+    </div>}
 </div>
     </div>
   </div>
-</div>
-            </div>)
+</div></div></div>)
             }
         }
 
