@@ -9,7 +9,7 @@ function TurtlesFound({turtlesSorted}) {
             if (turtles === null) turtles = {};
             for (var key in turtlesSorted) {
                 var turtle = turtlesSorted[key][1];
-                if (turtle.hasOwnProperty("found")) {
+                if (turtle.hasOwnProperty("found") && turtle.found.hasOwnProperty("by")) {
                     
                     for (var uid of turtle.found.by) {
                         if (finders.hasOwnProperty(turtles[uid].name)) {

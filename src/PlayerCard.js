@@ -141,6 +141,7 @@ function PlayerCard({player, uid}) {
   <h2 class="placeShow placeShowModal">#{player.place}</h2>
   <img className='xShow' style={{"width":"350px", opacity:"0.7"}}src="https://cdn.discordapp.com/attachments/803804130182692965/1120207950418546808/thign.png"></img>
   <div class="card-body">
+
     <h5 className='' style={{fontWeight:"bold"}}>{player.name}</h5>
     <h5>Found By: {finders.join(", ")}</h5>
     {(player.found.verified || admin) ? <div>
@@ -157,6 +158,16 @@ function PlayerCard({player, uid}) {
     
     
     </div>}
+    {admin &&   <div><h2>Set Profile Picture</h2>
+    <input type="text" id="portalPic"  className='form-control'></input>
+    <button onClick={(e) => {
+        setProfilePic(player.uid, e.target.parentElement.getElementsByTagName("input")[0].value).then(() => {
+            alert("Set Profile Picture");
+        }
+        ).catch((err) => {
+            alert(err);
+        })
+    }} className="btn btn-primary">Set</button></div>}
 </div>
     </div>
   </div>

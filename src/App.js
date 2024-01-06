@@ -5,13 +5,14 @@ import "bootstrap"
 import { getAuth } from "firebase/auth";
 import { useEffect, useState } from 'react';
 import { join, login } from './js/script';
-import { getGameState, watchTurtles } from './js/database';
+import { getGameState, isAdmin, watchTurtles } from './js/database';
 import Location from './Location';
 import Report from './Report';
 import TurtlesFound from './TurtlesFound';
 import CountdownElim from './Countdown';
 import WSRank from './WSRank';
 import Header from './Header';
+import AdminPanel from './AdminPanel';
 
 function App() {
   const auth = getAuth();
@@ -19,10 +20,15 @@ function App() {
   const [turtles, setTurtles] = useState(0)
   const [sortedTurtles, setSortedTurtles] = useState(0)
   const [gameState, setGameState] = useState(0);
+  const [admin, setAdmin] = useState(false);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user);
+      isAdmin(user.uid).then((admin) => {
+        setAdmin(admin);
+      }
+      )
     });
     watchTurtles(turtles => {
       if (turtles === null) turtles = {};
@@ -114,7 +120,7 @@ function App() {
           </div>
           <TurtlesFound turtlesSorted={sortedTurtles}/>
           <WSRank/>
-          
+          {admin && <AdminPanel/>}
     </div>
     <div className="modal fade" id="submitLoc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div className="modal-dialog">
